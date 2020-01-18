@@ -76,6 +76,10 @@ def main():
     
     X_topright=int(X_topright) #X co-ordinate of the top right corner
     Y_topright=int(Y_topright) #Y co-ordinate of the top right corner
+    
+    if (X_topright > 50 or Y_topright > 50):
+        print("***Error! Grid co-ordinate value(s) are more than 50! Program exiting! ***")
+        return
 
     repeat_navigate=True
     while (repeat_navigate==True):
@@ -91,7 +95,10 @@ def main():
         print("\nEnter instructions for the ship:\n")
         third_line_input=str(input()).upper() #String containing ship movement instruction
      
-
+        if (len(third_line_input)>=100):
+            print("***Error! Instruction string legnth is 100 or greater! Program exiting! ***")
+            return
+            
         data = list(third_line_input)
         x=x0
         y=y0
