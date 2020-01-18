@@ -1,6 +1,9 @@
 #Author: Sarika Dighe
 #Date: 01/18/2020
-#Solution for coding challenge
+#Solution for coding challenge: Survey of Ships
+
+
+lost_coords=set() #Global set variable to store a set of lost-co-ords and orientation of ships
 
 #A dedicated function to turn the ship to the left (90 degrees)
 def Left(x, y, orient):
@@ -31,34 +34,40 @@ def Right(x, y, orient):
     
 #A dedicated function to move the ship forward/backward
 def Forward(x, y, orient,X_topright,Y_topright):
-    if (orient == 'E'):
-        x=x+1;
-        y=y;
-    elif (orient == 'N'):
-        y=y+1;
-        x=x;
-    elif (orient == 'W'):
-        x=x-1;
-        y=y;
-    else:
-        y=y-1;
-        x=x;
-    if (x < X_topright and y < Y_topright):
-        ship_status = ' '
-    else:
-        print("***Warning...Ship is LOST***")
-        ship_status = 'LOST'
+    global lost_coords
+    skip_flag = False
+    
+    if (x, y, orient) in lost_coords:
+        print("""***Co-ords are ({}, {}, {}) are found in lost-cordinate list 
+              from previous ship(s), thus skipping the instruction***""".format(x,y,orient))
+        skip_flag=True
+        ship_status=' '
         
-    return[x, y, orient,ship_status];
+    if skip_flag == False:        
+        if (orient == 'E'):
+            x=x+1;
+            y=y;
+        elif (orient == 'N'):
+            y=y+1;
+            x=x;
+        elif (orient == 'W'):
+            x=x-1;
+            y=y;
+        else:
+            y=y-1;
+            x=x;
+        if ((x >= X_topright and orient== 'E') or (y >= Y_topright and orient== 'N')):
+            ship_status = 'LOST'
+            print("*****Warning...Ship is LOST*****")
+            lost_coords.add((x, y, orient))
+        else:
+            ship_status = ' '            
+        
+    return[x, y, orient,ship_status]
     
-
-#Put everything together in the main block of the code
-
-#First store inputs in the useful variables
-    
+ #Put everything together in the main block of the code   
 def main():
     #Inputs for the problem:
-    #Top-right corner of the grid
     print("***This is a ship survey system***")
     print("\nInputs for ship navigation")
     print("\nEnter top right corner X & Y co-ordinates of the grid:\n")
@@ -102,17 +111,21 @@ def main():
         
             else:
                 print(temp, ": Processing the instruction for 'Forward' movement")
-                [x, y, orient, ship_status]=Forward(x, y, orient,X_topright,Y_topright); 
+                [x, y, orient, ship_status]=Forward(x, y, orient,X_topright,Y_topright)
+                if ship_status == 'LOST':
+                    break
 
+        print("\n******************************\n")
         print("\nFinal Position of the ship is:\n")
         print(x, y, orient, ship_status)
+        print("\n******************************\n")
         
         option=str(input("\nDo you want to perform navigation on another ship? (Y/N)")).upper()
         if option == 'Y':
             repeat_navigate=True
         else:
             repeat_navigate=False
-
+            
     
 if __name__ == '__main__':
     main()
