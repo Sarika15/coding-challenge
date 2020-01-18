@@ -59,46 +59,60 @@ def Forward(x, y, orient,X_topright,Y_topright):
 def main():
     #Inputs for the problem:
     #Top-right corner of the grid
+    print("***This is a ship survey system***")
+    print("\nInputs for ship navigation")
+    print("\nEnter top right corner X & Y co-ordinates of the grid:\n")
     first_line_input=input()
     [X_topright, Y_topright]=first_line_input.split()
     
     X_topright=int(X_topright) #X co-ordinate of the top right corner
     Y_topright=int(Y_topright) #Y co-ordinate of the top right corner
 
-    #Ship initial position
-    second_line_input=input()
-    [x0, y0, orient0]=second_line_input.split() #Initial orientation of the ship for N S E W directions
-    x0=int(x0) #X co-ordinate of the initial position of the ship
-    y0=int(y0) #Y co-ordinate  of the initial position of the ship
+    repeat_navigate=True
+    while (repeat_navigate==True):
+        #Ship initial position
+        print("\nEnter initial position and orientation of the ship:\n")
+        second_line_input=str(input()).upper()
+        [x0, y0, orient0]=second_line_input.split() #Initial orientation of the ship for N S E W directions
+        x0=int(x0) #X co-ordinate of the initial position of the ship
+        y0=int(y0) #Y co-ordinate  of the initial position of the ship
     
 
-    #Instruction for ship movement
-    third_line_input=input() #String containing ship movement instruction
+        #Instruction for ship movement
+        print("\nEnter instructions for the ship:\n")
+        third_line_input=str(input()).upper() #String containing ship movement instruction
      
 
-    data = list(third_line_input)
-    x=x0
-    y=y0
-    orient=orient0
+        data = list(third_line_input)
+        x=x0
+        y=y0
+        orient=orient0
 
-    #Loop through the instructions with one instruction at a time
-    for temp in data:
-        print(temp)
-    
-        if (temp == 'L'):
-            print("Processing the instruction for 90 degree turn to the Left")
-            [x, y, orient]=Left(x, y, orient); 
-    
-        elif (temp == 'R'):
-            print("Processing the instruction for 90 degree turn to the Right")
-            [x, y, orient]=Right(x, y, orient); 
+        #Loop through the instructions with one instruction at a time
+        for temp in data:
         
-        else:
-            print("Processing the instruction for 'Forward' movement")
-            [x, y, orient, ship_status]=Forward(x, y, orient,X_topright,Y_topright); 
-
     
-    print(x, y, orient, ship_status)
+            if (temp == 'L'):
+                print(temp, ": Processing the instruction for 90 degree turn to the Left")
+                [x, y, orient]=Left(x, y, orient); 
+    
+            elif (temp == 'R'):
+                print(temp, ": Processing the instruction for 90 degree turn to the Right")
+                [x, y, orient]=Right(x, y, orient); 
+        
+            else:
+                print(temp, ": Processing the instruction for 'Forward' movement")
+                [x, y, orient, ship_status]=Forward(x, y, orient,X_topright,Y_topright); 
+
+        print("\nFinal Position of the ship is:\n")
+        print(x, y, orient, ship_status)
+        
+        option=str(input("\nDo you want to perform navigation on another ship? (Y/N)")).upper()
+        if option == 'Y':
+            repeat_navigate=True
+        else:
+            repeat_navigate=False
+
     
 if __name__ == '__main__':
     main()
